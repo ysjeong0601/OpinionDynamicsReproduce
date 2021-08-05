@@ -65,23 +65,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A2B593BA26AE3B6300AEB0E9 = {
-			isa = PBXGroup;
-			children = (
-				A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */,
-				A2B593C426AE3B6300AEB0E9 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		A2B593C426AE3B6300AEB0E9 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A2B593C326AE3B6300AEB0E9 /* OpinionDynamics */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */ = {
+		A20532C126BB87D100F81B3E /* src */ = {
 			isa = PBXGroup;
 			children = (
 				A2B593CD26AE3C0200AEB0E9 /* NetworkMethod.hpp */,
@@ -103,6 +87,30 @@
 				A2D123C626B907B3008117B8 /* Voter.hpp */,
 				A2B4DE1D26B967AC00407DEF /* Majority.cpp */,
 				A2B4DE1E26B967AC00407DEF /* Majority.hpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		A2B593BA26AE3B6300AEB0E9 = {
+			isa = PBXGroup;
+			children = (
+				A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */,
+				A2B593C426AE3B6300AEB0E9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A2B593C426AE3B6300AEB0E9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2B593C326AE3B6300AEB0E9 /* OpinionDynamics */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */ = {
+			isa = PBXGroup;
+			children = (
+				A20532C126BB87D100F81B3E /* src */,
 			);
 			path = OpinionDynamics;
 			sourceTree = "<group>";

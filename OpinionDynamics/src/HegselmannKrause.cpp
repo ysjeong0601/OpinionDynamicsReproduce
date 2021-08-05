@@ -66,9 +66,6 @@ void HegselmannKrause::run(int __time){
             sNode2 = this->adjMxt->at(sNode1).at(sNode2);
         }
         
-        
-        
-    
         // interaction
         int node1_deg = nodeVec->at(sNode1).getDeg();
         int interaction_Count = 0;
