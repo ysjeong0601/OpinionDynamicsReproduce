@@ -7,7 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A2047CC326AFD14F0012796B /* NetworkNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2047CC126AFD14F0012796B /* NetworkNode.cpp */; };
+		A2047CC626AFD3D70012796B /* NetworkEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2047CC426AFD3D70012796B /* NetworkEdge.cpp */; };
+		A2047CC926AFDD9B0012796B /* Opinion_Agent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2047CC726AFDD9B0012796B /* Opinion_Agent.cpp */; };
+		A263BA9926B6A78100307EC5 /* Deffuant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A263BA9726B6A78100307EC5 /* Deffuant.cpp */; };
+		A280149826B7E51B00C5B9D1 /* HegselmannKrause.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A280149626B7E51B00C5B9D1 /* HegselmannKrause.cpp */; };
+		A2B4DE1F26B967AC00407DEF /* Majority.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2B4DE1D26B967AC00407DEF /* Majority.cpp */; };
 		A2B593C726AE3B6300AEB0E9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2B593C626AE3B6300AEB0E9 /* main.cpp */; };
+		A2B593CF26AE3C2F00AEB0E9 /* NetworkMethod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2B593CE26AE3C2F00AEB0E9 /* NetworkMethod.cpp */; };
+		A2B593D226AE3C6900AEB0E9 /* NetworkGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2B593D026AE3C6900AEB0E9 /* NetworkGenerator.cpp */; };
+		A2D123C726B907B3008117B8 /* Voter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D123C526B907B3008117B8 /* Voter.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +32,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A2047CC126AFD14F0012796B /* NetworkNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkNode.cpp; sourceTree = "<group>"; };
+		A2047CC226AFD14F0012796B /* NetworkNode.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkNode.hpp; sourceTree = "<group>"; };
+		A2047CC426AFD3D70012796B /* NetworkEdge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkEdge.cpp; sourceTree = "<group>"; };
+		A2047CC526AFD3D70012796B /* NetworkEdge.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkEdge.hpp; sourceTree = "<group>"; };
+		A2047CC726AFDD9B0012796B /* Opinion_Agent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Opinion_Agent.cpp; sourceTree = "<group>"; };
+		A2047CC826AFDD9B0012796B /* Opinion_Agent.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Opinion_Agent.hpp; sourceTree = "<group>"; };
+		A263BA9726B6A78100307EC5 /* Deffuant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Deffuant.cpp; sourceTree = "<group>"; };
+		A263BA9826B6A78100307EC5 /* Deffuant.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Deffuant.hpp; sourceTree = "<group>"; };
+		A280149626B7E51B00C5B9D1 /* HegselmannKrause.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = HegselmannKrause.cpp; sourceTree = "<group>"; };
+		A280149726B7E51B00C5B9D1 /* HegselmannKrause.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = HegselmannKrause.hpp; sourceTree = "<group>"; };
+		A2B4DE1D26B967AC00407DEF /* Majority.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Majority.cpp; sourceTree = "<group>"; };
+		A2B4DE1E26B967AC00407DEF /* Majority.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Majority.hpp; sourceTree = "<group>"; };
 		A2B593C326AE3B6300AEB0E9 /* OpinionDynamics */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = OpinionDynamics; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2B593C626AE3B6300AEB0E9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A2B593CD26AE3C0200AEB0E9 /* NetworkMethod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NetworkMethod.hpp; sourceTree = "<group>"; };
+		A2B593CE26AE3C2F00AEB0E9 /* NetworkMethod.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkMethod.cpp; sourceTree = "<group>"; };
+		A2B593D026AE3C6900AEB0E9 /* NetworkGenerator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkGenerator.cpp; sourceTree = "<group>"; };
+		A2B593D126AE3C6900AEB0E9 /* NetworkGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NetworkGenerator.hpp; sourceTree = "<group>"; };
+		A2D123C526B907B3008117B8 /* Voter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Voter.cpp; sourceTree = "<group>"; };
+		A2D123C626B907B3008117B8 /* Voter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Voter.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +84,25 @@
 		A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */ = {
 			isa = PBXGroup;
 			children = (
+				A2B593CD26AE3C0200AEB0E9 /* NetworkMethod.hpp */,
 				A2B593C626AE3B6300AEB0E9 /* main.cpp */,
+				A2B593CE26AE3C2F00AEB0E9 /* NetworkMethod.cpp */,
+				A2B593D026AE3C6900AEB0E9 /* NetworkGenerator.cpp */,
+				A2B593D126AE3C6900AEB0E9 /* NetworkGenerator.hpp */,
+				A2047CC126AFD14F0012796B /* NetworkNode.cpp */,
+				A2047CC226AFD14F0012796B /* NetworkNode.hpp */,
+				A2047CC726AFDD9B0012796B /* Opinion_Agent.cpp */,
+				A2047CC826AFDD9B0012796B /* Opinion_Agent.hpp */,
+				A2047CC426AFD3D70012796B /* NetworkEdge.cpp */,
+				A2047CC526AFD3D70012796B /* NetworkEdge.hpp */,
+				A263BA9726B6A78100307EC5 /* Deffuant.cpp */,
+				A263BA9826B6A78100307EC5 /* Deffuant.hpp */,
+				A280149626B7E51B00C5B9D1 /* HegselmannKrause.cpp */,
+				A280149726B7E51B00C5B9D1 /* HegselmannKrause.hpp */,
+				A2D123C526B907B3008117B8 /* Voter.cpp */,
+				A2D123C626B907B3008117B8 /* Voter.hpp */,
+				A2B4DE1D26B967AC00407DEF /* Majority.cpp */,
+				A2B4DE1E26B967AC00407DEF /* Majority.hpp */,
 			);
 			path = OpinionDynamics;
 			sourceTree = "<group>";
@@ -118,7 +163,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B4DE1F26B967AC00407DEF /* Majority.cpp in Sources */,
+				A2B593D226AE3C6900AEB0E9 /* NetworkGenerator.cpp in Sources */,
 				A2B593C726AE3B6300AEB0E9 /* main.cpp in Sources */,
+				A2D123C726B907B3008117B8 /* Voter.cpp in Sources */,
+				A263BA9926B6A78100307EC5 /* Deffuant.cpp in Sources */,
+				A280149826B7E51B00C5B9D1 /* HegselmannKrause.cpp in Sources */,
+				A2047CC926AFDD9B0012796B /* Opinion_Agent.cpp in Sources */,
+				A2047CC626AFD3D70012796B /* NetworkEdge.cpp in Sources */,
+				A2B593CF26AE3C2F00AEB0E9 /* NetworkMethod.cpp in Sources */,
+				A2047CC326AFD14F0012796B /* NetworkNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
