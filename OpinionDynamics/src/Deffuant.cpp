@@ -80,16 +80,17 @@ void Deffuant::run(int __time){
         // select one neighbor
         uniform_int_distribution<> dis2(0,nodeVec->at(sNode1).getDeg()-1);
         
-        if (nodeVec->at(sNode1).getDeg() == 0) {
-            step++;
-            continue;
-        }
+        
         int sNode2 = dis2(gen);
         
         if (network->isFullConnected()) {
             sNode2 = dis(gen);
         }else{
             sNode2 = this->adjMxt->at(sNode1).at(sNode2);
+            if (nodeVec->at(sNode1).getDeg() == 0) {
+                step++;
+                continue;
+            }
         }
         
         double delta = 0.0;
@@ -101,11 +102,14 @@ void Deffuant::run(int __time){
         if (abs(delta) < epsilon) {
             
             
-            double op1,op2;
-            op1 = nodeVec->at(sNode1).getDoubleOpinionState() + mu * delta;
-            op2 = nodeVec->at(sNode2).getDoubleOpinionState() - mu * delta;
+            double op1,op2,dummy;
+            dummy = mu * delta;
+            op1 = nodeVec->at(sNode1).getDoubleOpinionState() + dummy;
+            op2 = nodeVec->at(sNode2).getDoubleOpinionState() - dummy;
             nodeVec->at(sNode1).setOpinionState(op1);
             nodeVec->at(sNode2).setOpinionState(op2);
+            
+        }else{
             
         }
         

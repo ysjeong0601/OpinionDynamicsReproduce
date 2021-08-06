@@ -53,10 +53,8 @@ void MajorityRule::setFraction_A(double __fraction){
     uniform_int_distribution<int> dis(0,(network->getTotalNumberofNode())-1);
     
     
-    if(n_A != 0 || n_B != 0){
-        n_A = 0;
-        n_B = 0;
-    }
+    n_A = 0;
+    n_B = 0;
     
     for (Agent &node : *nodeVec) {
         node.setOpinionState(OPINION_B);
@@ -84,8 +82,8 @@ void MajorityRule::run(int __time){
     int time = __time;
     int sNode1 = 0 , allOpinion = 0;
     
-    vector<Agent> group_vector;
-    vector<int> avoiding_repetition;
+    
+    
     
     random_device rd;
     mt19937 gen(rd());
@@ -96,7 +94,10 @@ void MajorityRule::run(int __time){
     
     while (step < time) {
         int count = 0;
+        allOpinion = 0;
         bool check = false;
+        vector<int> avoiding_repetition;
+        vector<Agent> group_vector;
         
         // selected debate group
         while (count < debate_group) {
@@ -145,6 +146,11 @@ void MajorityRule::run(int __time){
         }
         
         fileStream << step  << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << " " << getOpinionAverage() << "\n";
+        
+        
+        if (n_A == 0 || n_B == 0) {
+            break;
+        }
         
         step++;
     }

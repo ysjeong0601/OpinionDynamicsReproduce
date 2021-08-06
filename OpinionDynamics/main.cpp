@@ -29,10 +29,10 @@ int main(int argc, const char * argv[]) {
     
     string folderName = "result";
     
-    string voterFileName = "voter_output.txt";
-    string mrfileName = "mr_output.txt";
-    string deffuant_file_name = "deffuant_output.txt";
-    string hk_file_name = "HK_output.txt";
+    string voterFileName = "voter_output";
+    string mrfileName = "mr_output";
+    string deffuant_file_name = "deffuant_output";
+    string hk_file_name = "HK_output";
     
     
     
@@ -51,26 +51,28 @@ int main(int argc, const char * argv[]) {
     majority.setNetwork(network2);
     
     network2.setFullConnected(true);
-    network2.setFractionA(0.55);
+    majority.setFraction_A(0.55);
     majority.run(1000);
     
     cout << "mr done\n";
     
-    Network network3(false,1000,2000);
+    Network network3(false,200,200);
+    network3.setFullConnected(true);
+    Deffuant deffuant(deffuant_file_name,0.5,0.15);
     
-    Deffuant deffuant(deffuant_file_name,0.2,0.2);
     deffuant.setNetwork(network3);
     deffuant.setRandomOpinion();
-    deffuant.run(1000);
+    deffuant.run(5000);
     cout << "deffuant done\n";
     
-    Network network4(false,1000,2000);
-    
+    Network network4(false,100,200);
+    network4.setFullConnected(true);
     HegselmannKrause HK(hk_file_name, 0.2, 0.2);
     HK.setNetwork(network4);
     HK.setRandomOpinion();
-    HK.run(1000);
+    HK.run(5000);
     cout << "HK done\n";
+    cout << "hk average : " << HK.getOpinionAverage()<<"\n";
     
     
     return 0;

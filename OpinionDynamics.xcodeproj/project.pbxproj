@@ -69,7 +69,6 @@
 			isa = PBXGroup;
 			children = (
 				A2B593CD26AE3C0200AEB0E9 /* NetworkMethod.hpp */,
-				A2B593C626AE3B6300AEB0E9 /* main.cpp */,
 				A2B593CE26AE3C2F00AEB0E9 /* NetworkMethod.cpp */,
 				A2B593D026AE3C6900AEB0E9 /* NetworkGenerator.cpp */,
 				A2B593D126AE3C6900AEB0E9 /* NetworkGenerator.hpp */,
@@ -110,6 +109,7 @@
 		A2B593C526AE3B6300AEB0E9 /* OpinionDynamics */ = {
 			isa = PBXGroup;
 			children = (
+				A2B593C626AE3B6300AEB0E9 /* main.cpp */,
 				A20532C126BB87D100F81B3E /* src */,
 			);
 			path = OpinionDynamics;

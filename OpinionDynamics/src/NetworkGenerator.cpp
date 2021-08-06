@@ -239,35 +239,6 @@ void Network::resetOpinions(){
     }
 }
 
-void Network::setFractionA(double __fraction_A){
-    if(n_A != 0 || n_B != 0){
-        n_A = 0;
-        n_B = 0;
-    }
-    int init_A = __fraction_A * totalNodes;
-    
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dis(0,totalNodes-1);
-    
-    int assign_count = 0;
-    while (assign_count != init_A) {
-        int __dummy = dis(gen);
-        if (nodeVec[__dummy].getOpinionState() == NULLOPINION) {
-            nodeVec[__dummy].setOpinionState(OPINION_A);
-            assign_count += 1;
-            n_A += 1;
-        }
-    }
-    for (auto &node : nodeVec) {
-        if (node.getOpinionState() == NULLOPINION) {
-            node.setOpinionState(OPINION_B);
-            n_B += 1;
-        }
-    }
-    
-}
-
 void Network::doVoterRule(){
     
     // select node
