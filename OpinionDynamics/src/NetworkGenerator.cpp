@@ -40,6 +40,7 @@ Network::Network(bool isWeight, int totalNode,double prob){
 
 void Network::generate(){
     int i,j;
+    pair<int, int> nodePair;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> dis(0,totalNodes-1);
@@ -60,11 +61,10 @@ void Network::generate(){
         // check
         while(1){
             int check = 0;
-            sNode1 = dis(gen);
-            sNode2 = dis(gen);
-            if (sNode1 == sNode2) {
-                continue;
-            }
+            nodePair = selectNodePair();
+            sNode1 = nodePair.first;
+            sNode2 = nodePair.second;
+            
             for (j=0; j<adjMtx[sNode1].size(); j++) {
                 if(sNode2 ==adjMtx[sNode1][j]){ // already connected
                     check = 1;
@@ -87,8 +87,6 @@ void Network::generate(){
         
         adjMtx[sNode1].push_back(sNode2);
         adjMtx[sNode2].push_back(sNode1);
-        
-        
     }
 }
 
@@ -122,45 +120,6 @@ void Network::generate(double __p){
     }
     
 }
-
-
-
-//                                                              random pair 보류중
-/*
-pair<int, int> Network::randomPair(){
-    int j;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dis(0,totalNodes-1);
-    int sNode1,sNode2;
-    pair<int, int> random_pair;
-    // check
-    while(1){
-        int check = 0;
-        sNode1 = dis(gen);
-        sNode2 = dis(gen);
-        if (sNode1 == sNode2) {
-            continue;
-        }
-        for (j=0; j<adjMtx[sNode1].size(); j++) {
-            if(sNode2 ==adjMtx[sNode1][j]){ // already connected
-                check = 1;
-                break;
-            }
-        }
-        if (check == 1) {
-            continue;
-        }else{
-            break;
-        }
-    } // while-end
-    random_pair.first = sNode1;
-    random_pair.second = sNode2;
-    
-    return random_pair;
-}
- */
-
 
 void Network::setFullConnected(bool __bool){
     this->isAlltoALL = __bool;
@@ -216,157 +175,21 @@ void Network::printAllNode(){
     }
 }
 
-void Network::setOpinionToAgents(){
-    n_A = 0;
-    n_B = 0;
-    double randNum = 0.0;
-    for (auto &node : nodeVec) {
-        randNum = (double)rand()/RAND_MAX;
-        if (randNum < 0.5) {
-            node.setOpinionState(OPINION_A);
-            n_A += 1;
-        }else{
-            node.setOpinionState(OPINION_B);
-            n_B += 1;
-        }
-    }
-}
-void Network::resetOpinions(){
-    n_A = 0;
-    n_B = 0;
-    for (auto &node : nodeVec) {
-        node.setOpinionState(NULLOPINION);
-    }
-}
-
-void Network::doVoterRule(){
-    
-    // select node
-    int sNode1,sNode2;
-    
+pair<int, int> Network::selectNodePair(){
+    int sNode1 = 0,sNode2 = 0;
+    pair<int, int> randomPair;
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<int> dis(0,totalNodes-1);
+    uniform_int_distribution<int> dis1(0,totalNodes-1);
     
-    sNode1 = dis(gen);
-    
-    if (nodeVec[sNode1].getDeg() == 0) {
-        cout << "isolated node\n";
-        return;
+    while (sNode1 == sNode2) {
+        sNode1 = dis1(gen);
+        sNode2 = dis1(gen);
     }
+    randomPair.first = sNode1;
+    randomPair.second = sNode2;
     
-    uniform_int_distribution<int> dis2(0,nodeVec[sNode1].getDeg() - 1);
-    sNode2 = dis2(gen);
-    
-    // selected node index -> sNode1
-    // n-th neighbor of sNode1 -> adjMax[sNode1][sNode2]
-    
-    // interaction
-    cout << "nodePair (" << sNode1 << "," << adjMtx[sNode1][sNode2] << "):("
-    << nodeVec[sNode1].getOpinionState()<< ","
-    << nodeVec[adjMtx[sNode1][sNode2]].getOpinionState()<<") -> ";
-    
-    if (nodeVec[sNode1].getOpinionState() != nodeVec[adjMtx[sNode1][sNode2]].getOpinionState()) {
-        // follow neighbor opinion
-        switch (nodeVec[adjMtx[sNode1][sNode2]].getOpinionState()) {
-            case OPINION_A:
-                n_A += 1;
-                n_B -= 1;
-                break;
-            case OPINION_B:
-                n_A -= 1;
-                n_B += 1;
-                break;
-            default:
-                break;
-        }
-        nodeVec[sNode1].setOpinionState(nodeVec[adjMtx[sNode1][sNode2]].getOpinionState());
-    }
-    
-    
-    cout << "nodePair (" << sNode1 << "," << adjMtx[sNode1][sNode2] << "):("
-    << nodeVec[sNode1].getOpinionState()<< ","
-    << nodeVec[adjMtx[sNode1][sNode2]].getOpinionState()<<")";
-    
-    cout << "\n";
-    
-}
-
-void Network::doMajorityRule(int __group){
-    int group = __group;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dis(0,totalNodes-1);
-    vector<int> pool;
-    int count = 0;
-    int totalOpi = 0;
-    
-    while (count < group) {
-        int node = dis(gen);
-        if (pool.size() == 0) {
-            pool.push_back(node);
-            count++;
-        }else{
-            bool check = false;
-            for (const int &item : pool) {
-                if(item == node){
-                    check = true;
-                    break;
-                }
-            }
-            if (check) {
-                continue;
-            }else{
-                pool.push_back(node);
-                count++;
-            }
-        }
-    }
-    
-    for (const int &item : pool) {
-        cout <<"(" << item << ","<<nodeVec[item].getOpinionState()<<"),";
-        totalOpi +=nodeVec[item].getOpinionState();
-    }
-    cout << "   total : " << totalOpi << "\n";
-
-    if (totalOpi > 0) {
-        for (const int &item : pool) {
-            if (nodeVec[item].getOpinionState() == OPINION_B) {
-                nodeVec[item].setOpinionState(OPINION_A);
-                n_A += 1;
-                n_B -= 1;
-            }
-        }
-    }else{
-        for (const int &item : pool) {
-            if (nodeVec[item].getOpinionState() == OPINION_A) {
-                nodeVec[item].setOpinionState(OPINION_B);
-                n_A -= 1;
-                n_B += 1;
-            }
-        }
-    }
-    
-}
-
-
-
-int Network::getNumberOfA(){
-    return n_A;
-}
-
-int Network::getNumberOfB(){
-    return n_B;
-}
-
-void Network::setContinueousOpinionToAgents(){
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_real_distribution<> dis(0,1);
-    
-    for (Agent &node : nodeVec) {
-        node.setOpinionState(dis(gen));
-    }
+    return randomPair;
 }
 
 vector<Agent>& Network::getNodeVector(){

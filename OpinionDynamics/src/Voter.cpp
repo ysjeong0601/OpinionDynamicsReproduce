@@ -12,6 +12,7 @@
 #include <random>
 #include <filesystem>
 #include <string>
+#include <cmath>
 
 #define OPINION_A 1
 #define OPINION_B -1
@@ -34,13 +35,15 @@ Voter::Voter(string __fileName){
     filePath /= dummyFileName;
 }
 
+Voter::Voter(Network& __network, string __fileName) : Voter(__fileName){
+    setNetwork(__network);
+}
+
 void Voter::setNetwork(Network &__network){
     this->network = &__network;
     this->nodeVec = &__network.getNodeVector();
     this->adjMxt = &__network.getAdjMtx();
-    
-    n_A = this->network->getTotalNumberofNode();
-    n_B = 0;
+    setFraction_A(0.5);
 }
 
 double Voter::getOpinionAverage(){
@@ -49,7 +52,35 @@ double Voter::getOpinionAverage(){
 //        sum += node.getOpinionState();
 //    }
 //    return sum/network->getTotalNumberofNode();
-    return (double)(n_A - n_B)/network->getTotalNumberofNode();
+    return abs((double)(n_A - n_B)/network->getTotalNumberofNode());
+}
+
+pair<int, int> Voter::getRandomPair(){
+    int sNode1 = 0,sNode2 = 0;
+    pair<int, int> randomPair;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis1(0,network->getTotalNumberofNode()-1)
+    ,dis2;
+    
+    if (network->isFullConnected()) {
+        while (sNode1 == sNode2) {
+            sNode1 = dis1(gen);
+            sNode2 = dis2(gen);
+        }
+    }else{
+        sNode1 = dis1(gen);
+        if (nodeVec->at(sNode1).getDeg() == 0) {
+            throw 0;
+        }
+        dis2 =uniform_int_distribution<int>(0,nodeVec->at(sNode1).getDeg()-1);
+        sNode2 = dis2(gen);
+        sNode2 = adjMxt->at(sNode1).at(sNode2);
+    }
+    randomPair.first = sNode1;
+    randomPair.second = sNode2;
+    
+    return randomPair;
 }
 
 void Voter::run(int __time){
@@ -61,32 +92,20 @@ void Voter::run(int __time){
     int step = 0;
     int time = __time;
     int sNode1 , sNode2;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(0,network->getTotalNumberofNode()-1);
-    
-    
-    
-    
+
     fileStream << step  << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << "\n";
     step++;
     while (step < time) {
-        
-        sNode1 = dis(gen);
-        
-        if (nodeVec->at(sNode1).getDeg() == 0) {
+        pair<int, int> randomPair;
+        try {
+            randomPair = getRandomPair();
+        } catch (int exception) {
+            step++;
             continue;
         }
-        
-        if (network->isFullConnected() == true) {
-            sNode2 = dis(gen);
-        }else{
-            uniform_int_distribution<int> dis2(0,nodeVec->at(sNode1).getDeg()-1);
-            sNode2 = dis2(gen);
-            sNode2 = adjMxt->at(sNode1).at(sNode2);
-        }
-        
-        
+        sNode1 = randomPair.first;
+        sNode2 = randomPair.second;
+
         if (nodeVec->at(sNode1).getOpinionState() != nodeVec->at(sNode2).getOpinionState()) {
             // a neighbor node j changes selected node i's opinion
             switch (nodeVec->at(sNode2).getOpinionState()) {
@@ -107,6 +126,10 @@ void Voter::run(int __time){
         }
         
         fileStream << step  << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << " " << getOpinionAverage() << "\n";
+        
+        if (n_A == 0 || n_B == 0) {
+            break;
+        }
         
         step++;
         

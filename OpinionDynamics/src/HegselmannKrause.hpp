@@ -18,12 +18,13 @@
 class HegselmannKrause : public Deffuant{
     
 public:
-    
+    HegselmannKrause(Network& __network, string __fileName, double __mu, double __epsilon);
     HegselmannKrause(string __fileName, double __mu, double __epsilon);
     void setNetwork(Network& __network);
     void setParameter(double __mu, double __epsilon);
     void run(int __time);
     double getOpinionAverage();
+    pair<int, int> getRandomPair();
 };
 
 

@@ -33,7 +33,7 @@ private:
     //functions
     void addNode(int index) override;
     void addEdge(int first, int second) override;
-    pair<int, int> randomPair();
+    pair<int, int> selectNodePair();
     
     
 public:
@@ -56,22 +56,9 @@ public:
     void setFullConnected(bool __bool);
     bool isFullConnected();
     
-    void setOpinionToAgents();
-    void setContinueousOpinionToAgents();
     
-    void resetOpinions();
-    void setFractionA(double __fraction_A);
-    void doVoterRule();
-    void doMajorityRule(int __group);
-    void doDeffuantRule(double __mu , double __epsilon);
-    
-    int getNumberOfA();
-    int getNumberOfB();
     vector<Agent>& getNodeVector();
     vector<vector<int>>& getAdjMtx();
-    
-    void resultFileOutput(ofstream& __outputStream);
-    
     
 };
 

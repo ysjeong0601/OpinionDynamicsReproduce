@@ -9,7 +9,9 @@
 #include "HegselmannKrause.hpp"
 
 HegselmannKrause::HegselmannKrause(string __fileName, double __mu, double __epsilon):Deffuant(__fileName, __mu, __epsilon){
-    
+}
+
+HegselmannKrause::HegselmannKrause(Network& __network, string __fileName, double __mu, double __epsilon):Deffuant(__network,__fileName, __mu, __epsilon){
 }
 
 void HegselmannKrause::setNetwork(Network &__network){
@@ -24,6 +26,10 @@ double HegselmannKrause::getOpinionAverage(){
     return Deffuant::getOpinionAverage();
 }
 
+pair<int, int> HegselmannKrause::getRandomPair(){
+    return Deffuant::getRandomPair();
+}
+
 void HegselmannKrause::run(int __time){
     // check stream
     if (!fileStream.is_open()) {
@@ -32,10 +38,8 @@ void HegselmannKrause::run(int __time){
     
     int step = 0;
     int time = __time;
-    
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(0,network->getTotalNumberofNode()-1);
+    int sNode1 = 0, sNode2 = 0;
+    pair<int, int> randomPair;
     
     
     fileStream << step;
@@ -48,24 +52,14 @@ void HegselmannKrause::run(int __time){
     
     
     while (step < time) {
-        // select one;
-        int sNode1 = dis(gen);
-        
-        // select one neighbor
-        uniform_int_distribution<> dis2(0,nodeVec->at(sNode1).getDeg()-1);
-        
-        
-        int sNode2 = dis2(gen);
-        
-        if (network->isFullConnected()) {
-            sNode2 = dis(gen);
-        }else{
-            sNode2 = this->adjMxt->at(sNode1).at(sNode2);
-            if (nodeVec->at(sNode1).getDeg() == 0) {
-                step++;
-                continue;
-            }
+        try {
+            randomPair = getRandomPair();
+        } catch (int exception) {
+            step++;
+            continue;
         }
+        sNode1 = randomPair.first;
+        sNode2 = randomPair.second;
         
         // interaction
         int node1_deg = nodeVec->at(sNode1).getDeg();

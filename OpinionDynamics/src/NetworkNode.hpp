@@ -31,11 +31,11 @@ public:
     int getDeg();
     double getWeight();
     
-    void setActivation(bool _isActivated);
-    void setDegree(int _degree);
-    void setWeight(double _weight);
-    void increaseDeg();
-    void decreaseDeg();
+    void setActivation(bool __isActivated);
+    void setDegree(int __degree);
+    void setWeight(double __weight);
+    void increaseDeg(int __deg = 1);
+    void decreaseDeg(int __deg = 1);
 };
 
 #endif /* NetworkNode_hpp */

@@ -31,6 +31,10 @@ MajorityRule::MajorityRule(string __fileName, int __group){
     filePath /= dummyFileName;
 }
 
+MajorityRule::MajorityRule(Network& __network,string __fileName, int __group) : MajorityRule(__fileName, __group) {
+    setNetwork(__network);
+}
+
 void MajorityRule::setDebateGroup(int __group){
     this->debate_group = __group;
 }
@@ -39,10 +43,41 @@ void MajorityRule::setNetwork(Network &__network){
     this->network = &__network;
     this->nodeVec = &__network.getNodeVector();
     this->adjMxt = &__network.getAdjMtx();
+    setFraction_A(0.5);
 }
 
 double MajorityRule::getOpinionAverage(){
-    return (double)(n_A - n_B)/network->getTotalNumberofNode();
+    return abs((double)(n_A - n_B)/network->getTotalNumberofNode());
+}
+
+
+pair<int, int> MajorityRule::getRandomPair(){
+    int sNode1 = 0,sNode2 = 0;
+    pair<int, int> randomPair;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis1(0,network->getTotalNumberofNode()-1)
+    ,dis2;
+    
+    if (network->isFullConnected()) {
+        while (sNode1 == sNode2) {
+            sNode1 = dis1(gen);
+            sNode2 = dis2(gen);
+        }
+    }else{
+        sNode1 = dis1(gen);
+        if (nodeVec->at(sNode1).getDeg() == 0) {
+            throw 0;
+        }
+        dis2 =uniform_int_distribution<int>(0,nodeVec->at(sNode1).getDeg()-1);
+        sNode2 = dis2(gen);
+        sNode2 = adjMxt->at(sNode1).at(sNode2);
+    }
+    randomPair.first = sNode1;
+    randomPair.second = sNode2;
+    
+    return randomPair;
+    
 }
 
 void MajorityRule::setFraction_A(double __fraction){
@@ -51,7 +86,6 @@ void MajorityRule::setFraction_A(double __fraction){
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> dis(0,(network->getTotalNumberofNode())-1);
-    
     
     n_A = 0;
     n_B = 0;
@@ -81,9 +115,6 @@ void MajorityRule::run(int __time){
     int step = 0;
     int time = __time;
     int sNode1 = 0 , allOpinion = 0;
-    
-    
-    
     
     random_device rd;
     mt19937 gen(rd());

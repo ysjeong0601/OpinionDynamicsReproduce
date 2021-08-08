@@ -27,13 +27,29 @@ Deffuant::Deffuant(string __fileName, double __mu, double __epsilon){
         fs::create_directory(filePath);
     }
     filePath /= dummyFileName;
+    
 }
+
+Deffuant::Deffuant(Network& __network,string __fileName, double __mu, double __epsilon) : Deffuant(__fileName,__mu,__epsilon){
+    setNetwork(__network);
+}
+
 
 void Deffuant::setNetwork(Network& __network){
     this->network = &__network;
     this->nodeVec = &__network.getNodeVector();
     this->adjMxt = &__network.getAdjMtx();
+    setRandomOpinion();
 }
+
+double Deffuant::getOpinionAverage(){
+    double average = 0.0;
+    for (Agent &node : *nodeVec) {
+        average += node.getDoubleOpinionState();
+    }
+    return abs(average/network->getTotalNumberofNode());
+}
+
 
 void Deffuant::setParameter(double __mu, double __epsilon){
     this->mu = __mu;
@@ -51,6 +67,36 @@ void Deffuant::setRandomOpinion(){
     
 }
 
+pair<int, int> Deffuant::getRandomPair(){
+    int sNode1 = 0,sNode2 = 0;
+    pair<int, int> randomPair;
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dis1(0,network->getTotalNumberofNode()-1)
+    ,dis2;
+    
+    if (network->isFullConnected()) {
+        while (sNode1 == sNode2) {
+            sNode1 = dis1(gen);
+            sNode2 = dis2(gen);
+        }
+    }else{
+        sNode1 = dis1(gen);
+        if (nodeVec->at(sNode1).getDeg() == 0) {
+            throw 0;
+        }
+        dis2 =uniform_int_distribution<int>(0,nodeVec->at(sNode1).getDeg()-1);
+        sNode2 = dis2(gen);
+        sNode2 = adjMxt->at(sNode1).at(sNode2);
+    }
+    randomPair.first = sNode1;
+    randomPair.second = sNode2;
+    
+    return randomPair;
+}
+
+
+
 void Deffuant::run(int __time){
     
     // check stream
@@ -60,13 +106,13 @@ void Deffuant::run(int __time){
     
     int step = 0;
     int time = __time;
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dis(0,network->getTotalNumberofNode()-1);
+    pair<int, int> randomPair;
+    int sNode1 =0, sNode2=0;
     
-    fileStream << step;
+    
     // initial state
     // a row represents state of all node
+    fileStream << step;
     for (Agent &node : *nodeVec) {
         fileStream << node.getDoubleOpinionState() << " ";
     }
@@ -74,42 +120,28 @@ void Deffuant::run(int __time){
     
     
     while (step < time) {
-        // select one;
-        int sNode1 = dis(gen);
-        
-        // select one neighbor
-        uniform_int_distribution<> dis2(0,nodeVec->at(sNode1).getDeg()-1);
-        
-        
-        int sNode2 = dis2(gen);
-        
-        if (network->isFullConnected()) {
-            sNode2 = dis(gen);
-        }else{
-            sNode2 = this->adjMxt->at(sNode1).at(sNode2);
-            if (nodeVec->at(sNode1).getDeg() == 0) {
-                step++;
-                continue;
-            }
+        try {
+            randomPair = getRandomPair();
+        } catch (int exception) {
+            step++;
+            continue;
         }
+        sNode1 = randomPair.first;
+        sNode2 = randomPair.second;
         
         double delta = 0.0;
         // opinion differenc => x_j - x_i
         delta = nodeVec->at(sNode2).getDoubleOpinionState() - nodeVec->at(sNode1).getDoubleOpinionState();
         
     
-        // interaction
+        // interact under conditions
         if (abs(delta) < epsilon) {
-            
-            
             double op1,op2,dummy;
             dummy = mu * delta;
             op1 = nodeVec->at(sNode1).getDoubleOpinionState() + dummy;
             op2 = nodeVec->at(sNode2).getDoubleOpinionState() - dummy;
             nodeVec->at(sNode1).setOpinionState(op1);
             nodeVec->at(sNode2).setOpinionState(op2);
-            
-        }else{
             
         }
         
@@ -124,10 +156,3 @@ void Deffuant::run(int __time){
     fileStream.close();
 }
 
-double Deffuant::getOpinionAverage(){
-    double average = 0.0;
-    for (Agent &node : *nodeVec) {
-        average += node.getDoubleOpinionState();
-    }
-    return average/network->getTotalNumberofNode();
-}

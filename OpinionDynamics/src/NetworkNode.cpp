@@ -32,18 +32,18 @@ double Node::getWeight(){
     return this->weight;
 }
 
-void Node::setActivation(bool _isActivated){
-    this->state = _isActivated;
+void Node::setActivation(bool __isActivated){
+    this->state = __isActivated;
 }
-void Node::setDegree(int _degree){
-    this->deg = _degree;
+void Node::setDegree(int __degree){
+    this->deg = __degree;
 }
-void Node::setWeight(double _weight){
-    this->weight = _weight;
+void Node::setWeight(double __weight){
+    this->weight = __weight;
 }
-void Node::increaseDeg(){
-    this->deg += 1;
+void Node::increaseDeg(int __deg){
+    this->deg += __deg;
 }
-void Node::decreaseDeg(){
-    this->deg -= 1;
+void Node::decreaseDeg(int __deg){
+    this->deg -= __deg;
 }
