@@ -25,6 +25,8 @@ public:
     void run(int __time);
     double getOpinionAverage();
     pair<int, int> getRandomPair();
+    
+    virtual ~HegselmannKrause();
 };
 
 

@@ -40,6 +40,8 @@ public:
     pair<int, int> getRandomPair() override;
     
     void setFraction_A(double __fraction);
+    
+    virtual ~Voter();
 };
 
 

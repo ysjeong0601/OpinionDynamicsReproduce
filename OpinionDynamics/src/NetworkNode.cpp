@@ -47,3 +47,6 @@ void Node::increaseDeg(int __deg){
 void Node::decreaseDeg(int __deg){
     this->deg -= __deg;
 }
+Node::~Node(){
+    
+}

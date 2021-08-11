@@ -35,6 +35,8 @@ public:
     void setFraction_A(double __fraction);
     void run(int __time);
     double getOpinionAverage();
+    
+    virtual ~Sznajd();
 };
 
 

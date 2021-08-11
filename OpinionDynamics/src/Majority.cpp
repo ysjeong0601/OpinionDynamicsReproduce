@@ -178,14 +178,12 @@ void MajorityRule::run(int __time){
         
         fileStream << step  << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << " " << getOpinionAverage() << "\n";
         
-        
         if (n_A == 0 || n_B == 0) {
             break;
         }
-        
         step++;
     }
-    
-    
+}
+MajorityRule::~MajorityRule(){
     
 }

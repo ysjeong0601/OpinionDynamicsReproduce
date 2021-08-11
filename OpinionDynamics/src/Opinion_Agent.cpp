@@ -26,3 +26,7 @@ int Agent::getOpinionState(){
 double Agent::getDoubleOpinionState(){
     return this->double_opi_state;
 }
+
+Agent::~Agent(){
+    
+}

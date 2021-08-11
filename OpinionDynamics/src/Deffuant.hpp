@@ -41,6 +41,8 @@ public:
     
     void setRandomOpinion();
     void setParameter(double __mu, double __epsilon);
+    
+    virtual ~Deffuant();
 };
 
 

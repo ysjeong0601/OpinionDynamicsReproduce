@@ -37,6 +37,7 @@ public:
     void setSecond(int _second);
     void setWeight(double _weight);
 
+    virtual ~Edge();
     
 };
 

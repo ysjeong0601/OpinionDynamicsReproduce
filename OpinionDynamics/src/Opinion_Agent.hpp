@@ -26,6 +26,8 @@ public:
     void setOpinionState(double __state);
     int getOpinionState();
     double getDoubleOpinionState();
+    
+    virtual ~Agent();
 };
 
 

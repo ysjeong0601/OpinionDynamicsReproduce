@@ -124,21 +124,15 @@ void Voter::run(int __time){
                     break;
             }
         }
-        
         fileStream << step  << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << " " << getOpinionAverage() << "\n";
-        
         if (n_A == 0 || n_B == 0) {
             break;
         }
-        
         step++;
-        
     }
-    
     if (fileStream.is_open()) {
         fileStream.close();
     }
-    
 }
 
 void Voter::setFraction_A(double __fraction){
@@ -169,4 +163,7 @@ void Voter::setFraction_A(double __fraction){
             n_B -= 1;
         }
     }
+}
+Voter::~Voter(){
+    
 }

@@ -11,6 +11,7 @@
 #include <fstream>
 #include <cmath>
 #include <time.h>
+#include <algorithm>
 
 #include "NetworkGenerator.hpp"
 
@@ -18,6 +19,7 @@
 #define OPINION_B -1
 #define NULLOPINION 0
 
+namespace fs = std::__fs::filesystem;
 
 Network::Network(){
     
@@ -36,6 +38,7 @@ Network::Network(bool isWeight, int totalNode,double prob){
     this->totalEdges = 0;
     generate(prob);
 }
+
 
 
 void Network::generate(){
@@ -118,7 +121,97 @@ void Network::generate(double __p){
             }
         }
     }
+}
+
+void Network::generate_Barabasi_Albert(int __init_deg, int __size){
     
+    
+    // start with 3 nodes
+    if (!nodeVec.empty()) {
+        cout << "network already exist\n";
+        exit(1);
+    }
+    // init
+    vector<int> degree_pool;
+    int pool_size = 6;
+    
+    // create triangle
+    addNode(0);
+    addNode(1);
+    addNode(2);
+    int i=0;
+    for (i=0; i<3; i++) {
+        vector<int> row;
+        adjMtx.push_back(row);
+    }
+    addEdge(0, 1);
+    adjMtx[0].push_back(1);
+    adjMtx[1].push_back(0);
+    degree_pool.push_back(0);
+    degree_pool.push_back(1);
+    
+    addEdge(0, 2);
+    adjMtx[0].push_back(2);
+    adjMtx[2].push_back(0);
+    degree_pool.push_back(0);
+    degree_pool.push_back(2);
+    
+    addEdge(1, 2);
+    adjMtx[1].push_back(2);
+    adjMtx[2].push_back(1);
+    degree_pool.push_back(1);
+    degree_pool.push_back(2);
+    
+    int index = 3;
+    
+    random_device rd;
+    mt19937 gen(rd());
+    while (index <= __size) {
+        uniform_int_distribution<int> dis(0,pool_size-1); // init size = 6
+        
+        // add a node
+        addNode(index);
+        vector<int> newRow;
+        adjMtx.push_back(newRow);
+        
+        // select nodes
+        int addCount = 0;
+        while (addCount < __init_deg) {
+            if(adjMtx[index].empty()){
+                int selected_Node = degree_pool[dis(gen)];
+                addEdge(selected_Node,index);
+                adjMtx[selected_Node].push_back(index);
+                adjMtx[index].push_back(selected_Node);
+                nodeVec[selected_Node].increaseDeg();
+                nodeVec[index].increaseDeg();
+                
+                // pool update
+                degree_pool.push_back(index);
+                degree_pool.push_back(selected_Node);
+            }else{
+                int selected_Node = degree_pool[dis(gen)];
+                // check repetition
+                if (count(adjMtx[index].begin(), adjMtx[index].end(), selected_Node) == 0) {
+                    addEdge(selected_Node, index);
+                    adjMtx[selected_Node].push_back(index);
+                    adjMtx[index].push_back(selected_Node);
+                    nodeVec[selected_Node].increaseDeg();
+                    nodeVec[index].increaseDeg();
+                    
+                    // pool update
+                    degree_pool.push_back(index);
+                    degree_pool.push_back(selected_Node);
+                }else{
+                    // repetition occur
+                    continue;;
+                }
+            }
+            addCount++;
+        } // while (addCount < __init_deg)
+        pool_size += 2*__init_deg;
+        index++;
+    } // while while (index <= 10000)
+    totalNodes = (int)nodeVec.size();
 }
 
 void Network::setFullConnected(bool __bool){
@@ -151,7 +244,14 @@ int Network::getTotalNumberofDegree(){
 }
 
 void Network::printAdjacency(){
-    
+    int i,j;
+    for (i=0; i<(int)adjMtx.size();i++){
+        cout << "index : " << i << " :";
+        for (j=0; j<(int)adjMtx[i].size(); j++) {
+            cout << " " << adjMtx[i][j];
+        }
+        cout << "\n";
+    }
 }
 void Network::printAllEdge(){
     for (Edge &edge : edgeVec) {
@@ -165,14 +265,40 @@ void Network::printAllNode(){
             case OPINION_A:
                 cout << "(A,1)\n";
                 break;
-                
             case OPINION_B:
                 cout << "(B,-1)\n";
-                
+                break;
             default:
+                cout << "\n";
                 break;
         }
     }
+}
+
+void Network::fileOutput_Deg_dis(ofstream &__fileStream, string __fileName){
+    int k;
+    vector<int> degDis(totalNodes);
+    
+    string dummyFileName = __fileName.append(".txt");
+    string folder = "result";
+    
+    fs::path filePath = fs::current_path();
+    filePath/=folder;
+    
+    if (!fs::exists(filePath)) {
+        fs::create_directory(filePath);
+    }
+    filePath /= dummyFileName;
+    
+    for (Agent &node : nodeVec) {
+        degDis[node.getDeg()] += 1;
+    }
+    
+    __fileStream.open(filePath);
+    for (k=0; k<totalNodes; k++) {
+        __fileStream << k << " " << degDis[k] << "\n";
+    }
+    __fileStream.close();
 }
 
 pair<int, int> Network::selectNodePair(){
@@ -198,4 +324,8 @@ vector<Agent>& Network::getNodeVector(){
 
 vector<vector<int>>& Network::getAdjMtx(){
     return adjMtx;
+}
+
+Network::~Network(){
+    
 }

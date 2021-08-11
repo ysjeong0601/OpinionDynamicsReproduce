@@ -44,3 +44,6 @@ void Edge::setFisrt(int _first){
 void Edge::setSecond(int _second){
     this->nodePair.second = _second;
 }
+Edge::~Edge(){
+    
+}

@@ -44,6 +44,7 @@ public:
     Network(bool isWeight,int totalNode,double prob);
     void generate();
     void generate(double __p);
+    void generate_Barabasi_Albert(int __init_deg, int __size);
     
     //functions
     int getTotalNumberofEdge() override;
@@ -52,13 +53,17 @@ public:
     void printAdjacency() override;
     void printAllEdge() override;
     void printAllNode() override;
+    void fileOutput_Deg_dis(ofstream& __fileStream,string __fileName);
     
     void setFullConnected(bool __bool);
     bool isFullConnected();
     
     
+    
     vector<Agent>& getNodeVector();
     vector<vector<int>>& getAdjMtx();
+    
+    virtual ~Network();
     
 };
 

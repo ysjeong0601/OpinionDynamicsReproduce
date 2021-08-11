@@ -94,9 +94,6 @@ void Sznajd::run(int __time){
     fileStream << step << " " << (double)n_A/network->getTotalNumberofNode() << " " << (double)n_B/network->getTotalNumberofNode() << " " << getOpinionAverage() <<"\n";
     // initial state
     // a row represents state of all node
-//    for (Agent &node : *nodeVec) {
-//        fileStream << node.getOpinionState() << " ";
-//    }
     
     int sNode1=0,sNode2=0;
     
@@ -163,5 +160,9 @@ void Sznajd::run(int __time){
     } // while(step<time) end
     
     fileStream.close();
+    
+}
+
+Sznajd::~Sznajd(){
     
 }

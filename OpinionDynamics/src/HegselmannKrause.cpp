@@ -109,3 +109,6 @@ void HegselmannKrause::run(int __time){
     }
     fileStream.close();
 }
+HegselmannKrause::~HegselmannKrause(){
+    
+}

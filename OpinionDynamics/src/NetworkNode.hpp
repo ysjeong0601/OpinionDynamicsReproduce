@@ -36,6 +36,8 @@ public:
     void setWeight(double __weight);
     void increaseDeg(int __deg = 1);
     void decreaseDeg(int __deg = 1);
+    
+    virtual ~Node();
 };
 
 #endif /* NetworkNode_hpp */

@@ -39,6 +39,8 @@ public:
     
     void setFraction_A(double __fraction);
     void setDebateGroup(int __group);
+    
+    virtual ~MajorityRule();
 };
 
 #endif /* Majority_hpp */

@@ -150,9 +150,11 @@ void Deffuant::run(int __time){
             fileStream << node.getDoubleOpinionState() << " ";
         }
         fileStream << "\n";
-        
         step++;
     }
     fileStream.close();
+}
+Deffuant::~Deffuant(){
+    
 }
 
