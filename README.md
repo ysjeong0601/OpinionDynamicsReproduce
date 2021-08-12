@@ -69,6 +69,11 @@ Opinion dynamics model reproduce
   ```
   결과는 시간, 의견A 비율, 의견B 비율, 전체 의견 평균으로 출력됩니다.
   
+  </br></br>
+* 주의사항
+  - Deffuant , Hegselmann-Krause 모델들의 경우 매 시간마다 모든 노드들의 의견 상태를 저장하기 때문에 노드수가 많아지면 출력되는 데이터가 많아져 파일의 크기가 매우 커집니다. 따라서 해당 모델들의 결과를 확인하려면 가능한 작은 네트워크를 이용해 주세요.
+  - 각 모델들은 정의에 따라 필요한 파라미터들이 있습니다. 그러므로 run 하기 이전에 반드시 다이나믹스 모델 객체에 파라미터들을 설정해야 바르게 작동됩니다.
+  
     
 </br></br></br>
 다이나믹스 모델들은 Castellano, C., Fortunato, S. & Loreto, V. Statistical physics of social dynamics. _Rev. Mod. Phys_. 81, 591–646 (2009) 논문을 참고하여 작성되었습니다.
