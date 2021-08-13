@@ -12,10 +12,6 @@ Opinion dynamics model reproduce
     ```cpp
     Network network(false,100,20);
     ```
-      또는
-    ```cpp
-    Network network = Network(false,100,20);
-    ```  
     인자 순서대로 의미하는 값들은 weight여부, 노드 개수, 링크 개수  
     
     
@@ -23,10 +19,6 @@ Opinion dynamics model reproduce
     ```cpp
     Network network(false,100,20);
     ```
-      또는
-    ```cpp
-    Network network = Network(false,100,0.2);
-    ```  
     
   * ### 바라바시-알버트 모델
     바라바시 알버트 모델을 이용해 Scale-free 네트워크를 만들려면 다음 함수를 이용하면 됩니다.
