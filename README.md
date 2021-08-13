@@ -17,7 +17,7 @@ Opinion dynamics model reproduce
     
   * ### 노드 개수와 노드 간 연결 확률로 구성하기
     ```cpp
-    Network network(false,100,20);
+    Network network(false,100,0.3);
     ```
     
   * ### 바라바시-알버트 모델
