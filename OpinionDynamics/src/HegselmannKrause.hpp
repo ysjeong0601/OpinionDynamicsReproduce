@@ -16,6 +16,8 @@
 #include <vector>
 
 class HegselmannKrause : public Deffuant{
+private:
+    vector<double> prev_state_vector;
     
 public:
     HegselmannKrause(Network& __network, string __fileName, double __mu, double __epsilon);
