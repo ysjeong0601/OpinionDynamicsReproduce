@@ -44,7 +44,8 @@ public:
     Network(bool isWeight,int totalNode,double prob);
     void generate();
     void generate(double __p);
-    void generate_Barabasi_Albert(int __init_deg, int __size);
+//    void generate_Barabasi_Albert(int __init_deg, int __size);
+    void generate_Barabasi_Albert(int __size);
     
     //functions
     int getTotalNumberofEdge() override;

@@ -123,8 +123,9 @@ void Network::generate(double __p){
     }
 }
 
-void Network::generate_Barabasi_Albert(int __init_deg, int __size){
+void Network::generate_Barabasi_Albert(int __size){
     
+    int __init_deg = 2;
     
     // start with 3 nodes
     if (!nodeVec.empty()) {
