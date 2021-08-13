@@ -31,6 +31,10 @@ pair<int, int> HegselmannKrause::getRandomPair(){
 }
 
 void HegselmannKrause::run(int __time){
+    for (Agent &node : *nodeVec) {
+        prev_state_vector.push_back(node.getDoubleOpinionState());
+    }
+    
     // check stream
     if (!fileStream.is_open()) {
         fileStream.open(filePath);
@@ -39,8 +43,6 @@ void HegselmannKrause::run(int __time){
     int step = 0;
     int time = __time;
     int sNode1 = 0, sNode2 = 0;
-    pair<int, int> randomPair;
-    
     
     fileStream << step;
     // initial state
@@ -52,53 +54,62 @@ void HegselmannKrause::run(int __time){
     
     
     while (step < time) {
-        try {
-            randomPair = getRandomPair();
-        } catch (int exception) {
-            step++;
-            continue;
-        }
-        sNode1 = randomPair.first;
-        sNode2 = randomPair.second;
         
-        // interaction
-        int node1_deg = nodeVec->at(sNode1).getDeg();
+        int node1_deg;
         int interaction_Count = 0;
         double sum = 0.0;
-        if (network->isFullConnected()) {
-            int i = 0;
-            for (i = 0; i < network->getTotalNumberofNode(); i++) {
-                if (i == sNode1) {
-                    continue;
+        
+        // for all nodes, synchronous
+        for (Agent &node : *nodeVec) {
+            if (node.getDeg() == 0) {
+                continue;
+            }
+            sNode1 = node.getIndex();
+            node1_deg = nodeVec->at(sNode1).getDeg();
+            interaction_Count = 0;
+            sum = 0.0;
+            
+            if (network->isFullConnected()) {
+                int i = 0;
+                for (i = 0; i < network->getTotalNumberofNode(); i++) {
+                    if (i == sNode1) {
+                        continue;
+                    }
+                    double delta = 0.0;
+                    sNode2 = nodeVec->at(i).getIndex();
+                    // opinion differenc => x_j - x_i
+                    delta = nodeVec->at(sNode2).getDoubleOpinionState() - nodeVec->at(sNode1).getDoubleOpinionState();
+                    
+                    if (abs(delta) < epsilon) {
+                        sum += nodeVec->at(sNode2).getDoubleOpinionState() - mu * delta;
+                        interaction_Count += 1;
+                    }
                 }
-                double delta = 0.0;
-                sNode2 = nodeVec->at(i).getIndex();
-                // opinion differenc => x_j - x_i
-                delta = nodeVec->at(sNode2).getDoubleOpinionState() - nodeVec->at(sNode1).getDoubleOpinionState();
-                
-                if (abs(delta) < epsilon) {
-                    sum += nodeVec->at(sNode2).getDoubleOpinionState() - mu * delta;
-                    interaction_Count += 1;
+            }else{
+                int i = 0;
+                for (i = 0; i < node1_deg; i++) {
+                    double delta = 0.0;
+                    sNode2 = nodeVec->at(adjMxt->at(sNode1).at(i)).getIndex();
+                    // opinion differenc => x_j - x_i
+                    delta = nodeVec->at(sNode2).getDoubleOpinionState() - nodeVec->at(sNode1).getDoubleOpinionState();
+                    
+                    if (abs(delta) < epsilon) {
+                        sum += nodeVec->at(sNode2).getDoubleOpinionState() - mu * delta;
+                        interaction_Count += 1;
+                    }
                 }
             }
-        }else{
-            int i = 0;
-            for (i = 0; i < node1_deg; i++) {
-                double delta = 0.0;
-                sNode2 = nodeVec->at(adjMxt->at(sNode1).at(i)).getIndex();
-                // opinion differenc => x_j - x_i
-                delta = nodeVec->at(sNode2).getDoubleOpinionState() - nodeVec->at(sNode1).getDoubleOpinionState();
-                
-                if (abs(delta) < epsilon) {
-                    sum += nodeVec->at(sNode2).getDoubleOpinionState() - mu * delta;
-                    interaction_Count += 1;
-                }
+            if (interaction_Count != 0) {
+                prev_state_vector[sNode1] = sum/interaction_Count;
             }
+        } // for - range
+        
+        // update
+        for (Agent &node : *nodeVec) {
+            node.setOpinionState(prev_state_vector[node.getIndex()]);
         }
         
-        
-        nodeVec->at(sNode1).setOpinionState(sum/interaction_Count);
-        
+        // writhe
         fileStream << step << " ";
         for (Agent &node : *nodeVec) {
             fileStream << node.getDoubleOpinionState() << " ";
@@ -108,7 +119,9 @@ void HegselmannKrause::run(int __time){
         step++;
     }
     fileStream.close();
+    
 }
+
 HegselmannKrause::~HegselmannKrause(){
     
 }
