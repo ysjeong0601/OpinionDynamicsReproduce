@@ -96,7 +96,7 @@ pair<int, int> Deffuant::getRandomPair(){
 }
 
 
-
+// update scheduling of the model is 'asynchronous'
 void Deffuant::run(int __time){
     
     // check stream
@@ -154,6 +154,7 @@ void Deffuant::run(int __time){
     }
     fileStream.close();
 }
+
 Deffuant::~Deffuant(){
     
 }
